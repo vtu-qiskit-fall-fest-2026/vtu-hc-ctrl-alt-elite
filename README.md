@@ -307,6 +307,6 @@ Released under the [MIT License](LICENSE). See `LICENSE` for details.
 **Ctrl Alt Elite** · Team ID `VTU-QFF-HC-0004` · Tier `Online`
 · Built with ⚛️ Qiskit for the VTU-QFF Hackathon
 
-[⬆ Back to Top](#Ctrl Alt Elite)
+[⬆ Back to Top](#ctrl-alt-elite)
 
 </div>
