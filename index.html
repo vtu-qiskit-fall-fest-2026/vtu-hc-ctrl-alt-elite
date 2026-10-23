@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuantumGate Cloud Lab — Interactive Quantum Computing Learning & Circuit Simulator</title>
+  <meta name="description" content="A modern, student-friendly interactive quantum computing laboratory. Learn quantum concepts, explore quantum gates, simulate circuits, analyze measurements, and take the 25-question assessment." />
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23070b16' stroke='%2300f0ff' stroke-width='6'/><ellipse cx='50' cy='50' rx='38' ry='16' fill='none' stroke='%23a855f7' stroke-width='4' transform='rotate(30 50 50)'/><ellipse cx='50' cy='50' rx='38' ry='16' fill='none' stroke='%2300f0ff' stroke-width='4' transform='rotate(-30 50 50)'/><circle cx='50' cy='50' r='8' fill='%2300f0ff'/></svg>" />
+</head>
+<body>
+
+  <!-- =========================================================================
+       STUDENT LOGIN MODAL (PRD Section 2)
+       ========================================================================= -->
+  <div id="loginModal" class="modal-overlay">
+    <div class="login-modal-box">
+      <div class="login-icon">⚛️</div>
+      <h2 class="login-title">Welcome to QuantumGate</h2>
+      <p class="login-desc">Interactive Quantum Computing Learning Laboratory & Circuit Simulator</p>
+      
+      <form id="loginForm" onsubmit="event.preventDefault(); window.App.handleStudentLogin();">
+        <label for="studentNameInput" style="display:block; text-align:left; font-size:0.85rem; font-weight:600; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">
+          Enter Your Student Name
+        </label>
+        <input 
+          type="text" 
+          id="studentNameInput" 
+          class="input-quantum" 
+          placeholder="e.g. Sanmeet" 
+          required 
+          autocomplete="name"
+          maxlength="40"
+        />
+        <button type="submit" class="btn btn-primary btn-lg" style="width:100%;">
+          Start Learning 🚀
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       NAVIGATION BAR (PRD Section 16)
+       ========================================================================= -->
+  <header class="app-header">
+    <div class="container header-inner">
+      <a href="#dashboard" class="brand-logo" onclick="window.App.switchView('dashboard'); return false;">
+        <div class="brand-icon-wrap">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" fill="#00f0ff" />
+            <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#00f0ff" transform="rotate(30 12 12)" />
+            <ellipse cx="12" cy="12" rx="10" ry="4" stroke="#a855f7" transform="rotate(-30 12 12)" />
+          </svg>
+        </div>
+        <div class="brand-text">Quantum<span>Gate</span> <span class="brand-badge">Lab</span></div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav>
+        <ul id="navMenu" class="nav-menu">
+          <li><button class="nav-link active" data-view="dashboard" onclick="window.App.switchView('dashboard')">Home</button></li>
+          <li><button class="nav-link" data-view="learn" onclick="window.App.switchView('learn')">Learn</button></li>
+          <li><button class="nav-link" data-view="gates" onclick="window.App.switchView('gates')">Quantum Gates</button></li>
+          <li><button class="nav-link" data-view="lab" onclick="window.App.switchView('lab')">Quantum Lab</button></li>
+          <li><button class="nav-link" data-view="measurement" onclick="window.App.switchView('measurement')">Measurement</button></li>
+          <li><button class="nav-link" data-view="analytics" onclick="window.App.switchView('analytics')">Analytics</button></li>
+          <li><button class="nav-link" data-view="assessment" onclick="window.App.switchView('assessment')">Assessment</button></li>
+        </ul>
+      </nav>
+
+      <!-- Student Profile Chip -->
+      <div class="header-right">
+        <div class="student-chip" id="studentHeaderChip" title="Click to change student name">
+          <div class="student-avatar" id="studentAvatar">S</div>
+          <span class="student-name-text" id="headerStudentName">Sanmeet</span>
+          <span class="student-progress-badge" id="headerProgressBadge">0%</span>
+          <button class="btn-icon-subtle" onclick="window.App.promptChangeName();" title="Switch Student Name">✏️</button>
+        </div>
+        <button class="mobile-nav-toggle" id="mobileMenuBtn" aria-label="Toggle navigation menu" onclick="window.App.toggleMobileMenu();">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN CONTENT CONTAINER
+       ========================================================================= -->
+  <main class="app-main container">
+
+    <!-- =======================================================================
+         VIEW 1: HOME / DASHBOARD (PRD Section 3)
+         ======================================================================= -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="dashboard-hero">
+        <div class="hero-welcome-badge">Quantum Computing Learning Platform</div>
+        <h1 class="hero-title" id="dashboardWelcomeTitle">Welcome, Sanmeet! 👋</h1>
+        <p class="hero-subtitle">
+          Welcome to your quantum learning laboratory. Explore fundamental principles, experiment with quantum gates, construct visual quantum circuits, observe probabilistic measurements, and assess your mastery.
+        </p>
+
+        <!-- Progress Tracker Bar (PRD Section 3) -->
+        <div class="hero-progress-box">
+          <div class="progress-header">
+            <span class="progress-title">Your Learning Progress</span>
+            <span class="progress-percent-val" id="dashboardProgressVal">0%</span>
+          </div>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="dashboardProgressBar" style="width: 0%;"></div>
+          </div>
+          <div class="progress-submetrics">
+            <div class="progress-submetric">Modules: <span id="dashMetricModules">0/8</span></div>
+            <div class="progress-submetric">Gates Studied: <span id="dashMetricGates">0/8</span></div>
+            <div class="progress-submetric">Lab Runs: <span id="dashMetricRuns">0</span></div>
+            <div class="progress-submetric">Assessment: <span id="dashMetricScore">Not Taken</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Educational Principle Banner (PRD Section 21) -->
+      <div class="learning-cycle-strip">
+        <div class="cycle-step active"><span class="cycle-dot"></span> LEARN</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> UNDERSTAND</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> EXPERIMENT</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> MEASURE</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> ANALYZE</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> TEST</div>
+        <div class="cycle-arrow">➔</div>
+        <div class="cycle-step"><span class="cycle-dot"></span> IMPROVE</div>
+      </div>
+
+      <!-- Dashboard Cards Grid (PRD Section 3) -->
+      <div class="dashboard-grid">
+        <!-- 1. Learn -->
+        <div class="glass-card dash-card card-glow-cyan">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-cyan">📖</div>
+              <span class="dash-stat-badge" id="cardStatModules">0/8 Completed</span>
+            </div>
+            <h3>Learn Quantum Computing</h3>
+            <p>Master the fundamentals step-by-step: bits vs qubits, superposition, Bloch sphere, measurement collapse, and quantum entanglement.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="window.App.switchView('learn');">Open Academy ➔</button>
+        </div>
+
+        <!-- 2. Quantum Gates -->
+        <div class="glass-card dash-card card-glow-purple">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-purple">🔲</div>
+              <span class="dash-stat-badge" id="cardStatGates">0/8 Studied</span>
+            </div>
+            <h3>Quantum Gates</h3>
+            <p>Interactive catalog of Pauli-X, Y, Z, Hadamard, Phase S, T, CNOT, and SWAP gates with live sandboxes and matrix math.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="window.App.switchView('gates');">Explore Gates ➔</button>
+        </div>
+
+        <!-- 3. Quantum Lab -->
+        <div class="glass-card dash-card card-glow-cyan">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-cyan">🔬</div>
+              <span class="dash-stat-badge">Interactive Simulator</span>
+            </div>
+            <h3>Quantum Lab</h3>
+            <p>Drag and drop quantum gates onto circuit wires. Build multi-qubit algorithms, trigger entangling CNOTs, and execute circuits.</p>
+          </div>
+          <button class="btn btn-primary" onclick="window.App.switchView('lab');">Open Circuit Lab ➔</button>
+        </div>
+
+        <!-- 4. Measurement -->
+        <div class="glass-card dash-card card-glow-emerald">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-emerald">📊</div>
+              <span class="dash-stat-badge">Born Rule & Shots</span>
+            </div>
+            <h3>Measurement & Shots</h3>
+            <p>Inspect exact theoretical state vector probabilities alongside multi-shot empirical counts (100, 500, 1000 shots) and Bloch vectors.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="window.App.switchView('measurement');">View Measurements ➔</button>
+        </div>
+
+        <!-- 5. Analytics -->
+        <div class="glass-card dash-card card-glow-amber">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-amber">📈</div>
+              <span class="dash-stat-badge">Student Records</span>
+            </div>
+            <h3>Analytics & Progress</h3>
+            <p>Track your learning journey, completed modules, circuit executions, topic strengths, and assessment score progression.</p>
+          </div>
+          <button class="btn btn-secondary" onclick="window.App.switchView('analytics');">View Analytics ➔</button>
+        </div>
+
+        <!-- 6. Assessment -->
+        <div class="glass-card dash-card card-glow-magenta">
+          <div>
+            <div class="dash-card-top">
+              <div class="dash-icon-box dash-icon-magenta">🎓</div>
+              <span class="dash-stat-badge" id="cardStatAssessment">25 Questions</span>
+            </div>
+            <h3>25-Question Assessment</h3>
+            <p>Test your quantum mastery with comprehensive questions, receive a certified scorecard, and get topic-based improvement advice.</p>
+          </div>
+          <button class="btn btn-primary" onclick="window.App.switchView('assessment');">Take Assessment ➔</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 2: LEARNING ACADEMY (PRD Section 4)
+         ======================================================================= -->
+    <section id="view-learn" class="view-section">
+      <div class="learning-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="modules-sidebar" id="modulesSidebar">
+          <!-- Dynamically generated module nav buttons -->
+        </aside>
+
+        <!-- Active Module Content -->
+        <article class="module-content-card" id="moduleContentArea">
+          <!-- Dynamically populated module content -->
+        </article>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 3: QUANTUM GATES (PRD Section 5)
+         ======================================================================= -->
+    <section id="view-gates" class="view-section">
+      <div class="gates-layout">
+        <!-- Gate Selector Pill Bar -->
+        <div class="gates-selector-bar" id="gatesSelectorBar">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Gate Detailed Showcase -->
+        <div class="gate-showcase-grid">
+          <!-- Details & Math -->
+          <div class="gate-details-card" id="gateDetailsCard">
+            <!-- Populated dynamically -->
+          </div>
+
+          <!-- Interactive Sandbox "Try This Gate" (PRD Section 5) -->
+          <div class="gate-sandbox-card" id="gateSandboxCard">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 4: QUANTUM LAB (CIRCUIT SIMULATOR) - PRD Section 6 & 7
+         ======================================================================= -->
+    <section id="view-lab" class="view-section">
+      <div class="lab-layout">
+        <!-- Toolbar -->
+        <div class="lab-toolbar">
+          <div class="lab-tool-group">
+            <label for="circuitPresetsSelect" style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">
+              Preset Circuits:
+            </label>
+            <select id="circuitPresetsSelect" class="select-quantum" onchange="window.App.loadCircuitPreset(this.value)">
+              <option value="">-- Choose Example Circuit --</option>
+              <option value="hadamard-superposition">Example 1: Hadamard Superposition (H on |0⟩)</option>
+              <option value="bit-flip-x">Example 2: Pauli-X Bit Flip (NOT)</option>
+              <option value="bell-state">Example 3: Bell State (Entanglement)</option>
+              <option value="phase-flip-z">Example 4: Quantum Phase Flip (H-Z-H)</option>
+              <option value="ghz-entanglement">Example 5: GHZ 3-Qubit Entanglement</option>
+              <option value="swap-circuit">Example 6: Quantum SWAP Gate</option>
+            </select>
+          </div>
+
+          <div class="lab-tool-group">
+            <label for="qubitCountSelect" style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">
+              Qubits:
+            </label>
+            <select id="qubitCountSelect" class="select-quantum" onchange="window.App.changeQubitCount(parseInt(this.value))">
+              <option value="2" selected>2 Qubits</option>
+              <option value="3">3 Qubits</option>
+              <option value="4">4 Qubits</option>
+            </select>
+          </div>
+
+          <div class="lab-tool-group">
+            <button class="btn btn-secondary btn-sm" onclick="window.App.resetCircuit();" title="Clear all gates and restore initial states">
+              🔄 Reset Circuit
+            </button>
+            <button class="btn btn-primary" onclick="window.App.runCircuit();" id="runCircuitBtn">
+              ⚡ Run Circuit
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="window.App.switchView('measurement');" title="Inspect measurement results and shots">
+              📊 Measure
+            </button>
+          </div>
+        </div>
+
+        <!-- Gate Palette -->
+        <div class="gate-palette-card">
+          <div class="palette-header">
+            <span>Gate Palette — Click a gate then click an empty slot, or drag directly:</span>
+            <span style="font-size:0.75rem; color:var(--cyan);">Tip: For CNOT, click control qubit then target qubit</span>
+          </div>
+          <div class="palette-gates-wrap">
+            <div class="gate-token token-H" draggable="true" data-gate="H" title="Hadamard (Superposition)" onclick="window.App.selectPaletteGate('H')">H</div>
+            <div class="gate-token token-X" draggable="true" data-gate="X" title="Pauli-X (NOT / Bit Flip)" onclick="window.App.selectPaletteGate('X')">X</div>
+            <div class="gate-token token-Y" draggable="true" data-gate="Y" title="Pauli-Y (Bit & Phase Flip)" onclick="window.App.selectPaletteGate('Y')">Y</div>
+            <div class="gate-token token-Z" draggable="true" data-gate="Z" title="Pauli-Z (Phase Flip)" onclick="window.App.selectPaletteGate('Z')">Z</div>
+            <div class="gate-token token-S" draggable="true" data-gate="S" title="Phase S (π/2 shift)" onclick="window.App.selectPaletteGate('S')">S</div>
+            <div class="gate-token token-T" draggable="true" data-gate="T" title="T Gate (π/4 shift)" onclick="window.App.selectPaletteGate('T')">T</div>
+            <div class="gate-token token-CNOT" draggable="true" data-gate="CNOT" title="CNOT (Controlled NOT)" onclick="window.App.selectPaletteGate('CNOT')">CNOT</div>
+            <div class="gate-token token-SWAP" draggable="true" data-gate="SWAP" title="SWAP (Exchange States)" onclick="window.App.selectPaletteGate('SWAP')">SWAP</div>
+            <div class="gate-token token-MEASURE" draggable="true" data-gate="MEASURE" title="Projective Measurement" onclick="window.App.selectPaletteGate('MEASURE')">📏</div>
+          </div>
+        </div>
+
+        <!-- Visual Circuit Canvas -->
+        <div class="circuit-canvas-card">
+          <div class="circuit-grid" id="circuitCanvasGrid">
+            <!-- Dynamically populated with qubit rows and column slots -->
+          </div>
+        </div>
+
+        <!-- Gate Interaction Inspector (PRD Section 7) -->
+        <div class="gate-inspector-card" id="gateInspectorCard">
+          <div class="inspector-header">
+            <span class="inspector-title" id="inspectorGateTitle">⚡ Gate Inspector</span>
+            <span class="meta-tag topic" id="inspectorGateType">Single Qubit</span>
+          </div>
+          <p id="inspectorExplanation" style="color:var(--text-muted); font-size:0.95rem;">
+            Click on any gate placed in the circuit above to inspect its quantum operation, mathematical matrix, and physical transformation.
+          </p>
+          <div class="inspector-grid" id="inspectorGrid">
+            <div class="inspector-stat-box">
+              <div class="lbl">Input State</div>
+              <div class="val" id="inspectorInput">|0⟩</div>
+            </div>
+            <div class="inspector-stat-box">
+              <div class="lbl">Operation</div>
+              <div class="val" id="inspectorOp">H (Hadamard)</div>
+            </div>
+            <div class="inspector-stat-box">
+              <div class="lbl">Output State</div>
+              <div class="val" id="inspectorOutput">(|0⟩ + |1⟩) / √2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 5: MEASUREMENT & PROBABILITIES (PRD Section 8)
+         ======================================================================= -->
+    <section id="view-measurement" class="view-section">
+      <div class="measurement-layout">
+        <!-- Theoretical State Vector & Probabilities -->
+        <div class="meas-panel-card">
+          <h2 class="meas-panel-title">
+            <span>📐</span> Exact Theoretical State Vector
+          </h2>
+          <p class="meas-panel-desc">
+            Calculated analytically from the circuit matrix transformations using Born's Rule: 
+            <code style="color:var(--cyan);">P(x) = |α_x|²</code>.
+          </p>
+
+          <div class="measurement-histogram" id="theoreticalHistogram">
+            <!-- Populated dynamically with probability bars -->
+          </div>
+
+          <!-- Bloch Coordinates Card -->
+          <div class="bloch-card-container">
+            <h4 style="font-size:1rem; margin-bottom:0.75rem; color:var(--text-bright);">
+              Bloch Sphere Projections (Q0 & Q1)
+            </h4>
+            <div class="bloch-coords-grid" id="blochCoordsGrid">
+              <!-- Coordinate items -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Empirical Multi-Shot Sampling (PRD Section 8) -->
+        <div class="meas-panel-card">
+          <h2 class="meas-panel-title">
+            <span>🎲</span> Multi-Shot Measurement Sampling
+          </h2>
+          <p class="meas-panel-desc">
+            Simulate actual quantum hardware readout across repeated shots. Notice how empirical counts approximate theoretical probabilities!
+          </p>
+
+          <div class="shots-selector-wrap">
+            <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted); text-transform:uppercase;">Select Shots:</span>
+            <button class="shot-btn" data-shots="100" onclick="window.App.runShots(100)">100 Shots</button>
+            <button class="shot-btn" data-shots="500" onclick="window.App.runShots(500)">500 Shots</button>
+            <button class="shot-btn active" data-shots="1000" onclick="window.App.runShots(1000)">1000 Shots</button>
+            <button class="btn btn-primary btn-sm" onclick="window.App.rerunActiveShots()">⚡ Sample Again</button>
+          </div>
+
+          <div class="measurement-histogram" id="empiricalHistogram">
+            <!-- Populated dynamically with counts and percentages -->
+          </div>
+
+          <div class="key-takeaway-box" style="margin-top:1.5rem;">
+            <div class="takeaway-icon">💡</div>
+            <div style="font-size:0.88rem; color:var(--text-muted);">
+              <strong>Why counts fluctuate:</strong> Quantum measurement is fundamentally projective and probabilistic. Over a large number of shots (Law of Large Numbers), empirical frequencies converge toward the exact quantum amplitudes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 6: ANALYTICS (PRD Section 10)
+         ======================================================================= -->
+    <section id="view-analytics" class="view-section">
+      <!-- High-level Metric Cards -->
+      <div class="analytics-overview-cards">
+        <div class="metric-card">
+          <div class="label">Overall Progress</div>
+          <div class="value" id="analyticsOverallProgress">0%</div>
+          <div class="sub">Curriculum & Lab</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Modules Completed</div>
+          <div class="value" id="analyticsModulesCount">0 / 8</div>
+          <div class="sub">Learning Academy</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Gates Studied</div>
+          <div class="value" id="analyticsGatesCount">0 / 8</div>
+          <div class="sub">Quantum Catalog</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Circuits Executed</div>
+          <div class="value" id="analyticsCircuitsCount">0</div>
+          <div class="sub">Lab Simulations</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Best Assessment</div>
+          <div class="value" id="analyticsBestScore">—</div>
+          <div class="sub" id="analyticsBestScoreSub">No attempts yet</div>
+        </div>
+      </div>
+
+      <!-- Content Grid: Topic Mastery & Attempt History -->
+      <div class="analytics-content-grid">
+        <!-- Topic Mastery -->
+        <div class="glass-card">
+          <h3 style="font-size:1.25rem; margin-bottom:0.5rem;">Topic Mastery Breakdown</h3>
+          <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">
+            Proficiency calculated across curriculum checkpoints and assessment scores.
+          </p>
+          <div class="topic-mastery-list" id="analyticsTopicMastery">
+            <!-- Dynamic topic progress bars -->
+          </div>
+        </div>
+
+        <!-- Assessment Attempts History (PRD Section 15) -->
+        <div class="glass-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-size:1.25rem;">Assessment History</h3>
+            <button class="btn btn-secondary btn-sm" onclick="window.App.switchView('assessment')">Take Assessment ➔</button>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="attempts-table" id="analyticsAttemptsTable">
+              <thead>
+                <tr>
+                  <th>Attempt</th>
+                  <th>Date</th>
+                  <th>Score</th>
+                  <th>Percentage</th>
+                  <th>Performance</th>
+                </tr>
+              </thead>
+              <tbody id="attemptsTableBody">
+                <tr>
+                  <td colspan="5" style="text-align:center; color:var(--text-dim); padding:2rem;">
+                    No assessment attempts recorded yet.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top:2rem; text-align:right;">
+            <button class="btn btn-secondary btn-sm" style="color:#ef4444;" onclick="window.App.resetAllStudentData()">
+              🗑️ Reset All My Progress
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         VIEW 7: 25-QUESTION ASSESSMENT (PRD Sections 11, 12, 13, 14, 15)
+         ======================================================================= -->
+    <section id="view-assessment" class="view-section">
+      <div class="quiz-wrapper">
+        
+        <!-- Active Quiz View Container -->
+        <div id="quizActiveContainer">
+          <div class="quiz-header-bar">
+            <div>
+              <span class="quiz-progress-text" id="quizQuestionTracker">Question 1 of 25</span>
+              <span class="quiz-topic-pill" id="quizTopicBadge">Superposition</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="window.App.confirmSubmitAssessment();">
+              Submit Assessment ➔
+            </button>
+          </div>
+
+          <!-- Question Dots Navigator (1 - 25) -->
+          <div class="quiz-dots-nav" id="quizDotsNav">
+            <!-- 25 numbered buttons generated by JS -->
+          </div>
+
+          <!-- Question Card -->
+          <div class="quiz-question-card">
+            <h3 class="question-text-title" id="quizQuestionText">
+              Loading question...
+            </h3>
+
+            <div class="quiz-options-list" id="quizOptionsList">
+              <!-- 4 Options rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Navigation Actions -->
+          <div class="quiz-nav-actions">
+            <button class="btn btn-secondary" id="quizPrevBtn" onclick="window.App.navQuizQuestion(-1)">
+              ← Previous
+            </button>
+            <div style="display:flex; gap:0.75rem;">
+              <button class="btn btn-secondary" id="quizNextBtn" onclick="window.App.navQuizQuestion(1)">
+                Next →
+              </button>
+              <button class="btn btn-primary" onclick="window.App.confirmSubmitAssessment();">
+                Submit Assessment
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scorecard & Improvement Analysis View (PRD Sections 12, 13, 14, 15) -->
+        <div id="quizScorecardContainer" class="scorecard-view">
+          <!-- Hero Score Banner -->
+          <div class="scorecard-hero">
+            <div class="scorecard-badge-tier tier-excellent" id="scorecardTierBadge">Very Good</div>
+            <h2 class="student-announcement" id="scorecardStudentAnnouncement">
+              Sanmeet has secured 21 out of 25 marks.
+            </h2>
+
+            <div class="score-big-display">
+              <span class="score-number" id="scorecardBigScore">21</span>
+              <span class="score-total-denom">/ 25</span>
+            </div>
+
+            <div class="score-stats-row">
+              <div class="score-stat-item">Percentage: <span class="stat-percent" id="scorecardPercent">84%</span></div>
+              <div class="score-stat-item">Correct: <span class="stat-correct" id="scorecardCorrect">21 / 25</span></div>
+              <div class="score-stat-item">Incorrect: <span class="stat-incorrect" id="scorecardIncorrect">4 / 25</span></div>
+            </div>
+          </div>
+
+          <!-- Improvement Analysis Section (PRD Section 14) -->
+          <div class="analysis-grid">
+            <div class="glass-card">
+              <h3 style="font-size:1.25rem; margin-bottom:1rem;">Your Topic Performance</h3>
+              <div class="topic-mastery-list" id="scorecardTopicPerformance">
+                <!-- Populated dynamically with strong vs needs practice tags -->
+              </div>
+            </div>
+
+            <div class="glass-card">
+              <h3 style="font-size:1.25rem; margin-bottom:1rem;">Attempt Progress History</h3>
+              <div id="scorecardAttemptsSummary">
+                <!-- List of attempts and improvement delta -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Recommended Learning Alert (PRD Section 14) -->
+          <div class="recommendation-banner" id="recommendationBanner">
+            <div class="rec-icon">💡</div>
+            <div>
+              <h4 style="font-size:1.1rem; color:var(--text-bright); margin-bottom:0.25rem;">Recommended Learning</h4>
+              <p id="recommendationText" style="color:var(--text-muted); font-size:0.95rem;">
+                You should revise CNOT Gate and Measurement before taking the assessment again.
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons (PRD Section 14 & 15) -->
+          <div class="scorecard-action-bar">
+            <button class="btn btn-secondary btn-lg" onclick="window.App.reviseWeakestTopic();" id="reviseTopicBtn">
+              📖 Revise Recommended Topic
+            </button>
+            <button class="btn btn-primary btn-lg" onclick="window.App.retakeAssessment();">
+              🔄 Try Assessment Again
+            </button>
+            <button class="btn btn-secondary btn-lg" onclick="window.App.showQuestionReviewModal();">
+              🔍 Review All 25 Questions & Explanations
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       QUESTION REVIEW MODAL
+       ========================================================================= -->
+  <div id="reviewModal" class="modal-overlay">
+    <div class="glass-card" style="max-width:850px; width:100%; max-height:85vh; overflow-y:auto; padding:2rem; background:#ffffff; border-radius:var(--radius-xl); box-shadow:var(--shadow-xl);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-subtle); padding-bottom:1rem;">
+        <h3 style="font-size:1.4rem;">Assessment Detailed Review</h3>
+        <button class="btn-icon-subtle" style="font-size:1.5rem;" onclick="document.getElementById('reviewModal').classList.remove('active');">✕</button>
+      </div>
+      <div id="reviewQuestionsContainer" style="display:flex; flex-direction:column; gap:1.5rem;">
+        <!-- Populated with all 25 questions, your choice, correct answer, explanation -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="js/quantum-engine.js"></script>
+  <script src="js/gates-data.js"></script>
+  <script src="js/learning-data.js"></script>
+  <script src="js/quiz-data.js"></script>
+  <script src="js/circuit-presets.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

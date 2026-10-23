@@ -1,312 +1,118 @@
-<div align="center">
+# QuantumGate Cloud Lab ⚛️
+### Interactive Quantum Computing Learning & Circuit Simulator
 
-# Ctrl Alt Elite
-
-**VTU-QFF-HC-0004** &nbsp;|&nbsp; Tier: **Online**
-
-</div>
+A modern, student-friendly web platform designed to teach beginners and engineering students the fundamentals of quantum computing through interactive lessons, an elementary gate catalog with live sandboxes, a visual multi-qubit circuit simulator, exact Born-rule measurement analytics, multi-shot Monte Carlo sampling, and a comprehensive 25-question assessment with personalized topic improvement analysis.
 
 ---
 
-<div align="center">
+## 🌟 Key Features
 
-| | |
-| :--- | :--- |
-| **Team** | Ctrl Alt Elite |
-| **Team ID** | VTU-QFF-HC-0004 |
-| **Tier** | Online |
-| **Repository** | [vtu-hc-ctrl-alt-elite](https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-ctrl-alt-elite.git) |
-| **Organisation** | [vtu-qiskit-fall-fest-2026](https://github.com/vtu-qiskit-fall-fest-2026) |
-| **Event** | VTU-QFF Hackathon — VTU-Qiskit Fall Fest 2026 |
+1. **Simple Student Login**
+   - Frictionless onboarding: enter your student name (e.g., *Sanmeet*) and start learning immediately.
+   - All progress, gates learned, circuit experiments, and assessment scores are persisted locally in `localStorage` without requiring a backend database.
 
-</div>
+2. **Interactive Learning Academy**
+   - 7 Progressive Modules covering:
+     - Classical Computing vs Quantum Computing
+     - Anatomy of a Qubit (|0⟩, |1⟩ Dirac notation, Bloch sphere)
+     - Superposition & Quantum Wavefunction Interference
+     - Measurement, Wavefunction Collapse & Born's Rule
+     - Quantum Gates & Unitary Circuit Architecture
+     - The CNOT Gate & Multi-Qubit Tensor Products
+     - Quantum Entanglement & Einstein-Podolsky-Rosen (EPR) Bell States
+   - Embedded interactive checkpoints with instant educational feedback.
 
----
+3. **Dedicated Quantum Gates Catalog & Sandboxes**
+   - Detailed conceptual, matrix, and intuitive real-world explanations for:
+     - **Pauli-X Gate** (Quantum NOT / Bit Flip)
+     - **Pauli-Y Gate** (Bit-Flip + Phase-Flip)
+     - **Pauli-Z Gate** (Phase Flip)
+     - **Hadamard (H) Gate** (Superposition Engine)
+     - **Phase (S) Gate** (π/2 Phase Shift)
+     - **T Gate** (π/4 Phase Shift, Universal Quantum Computing)
+     - **CNOT Gate** (Controlled-NOT / Entanglement Generator)
+     - **SWAP Gate** (Qubit State Exchange)
+   - *"Try This Gate"* Live Sandbox: toggle input basis states and watch the state vector, probabilities, and Bloch sphere coordinates update in real-time.
 
-## 📌 Table of Contents
+4. **Quantum Lab (Visual Quantum Circuit Simulator)**
+   - Wire grid for 2, 3, or 4 qubits with initial state toggles (|0⟩ or |1⟩).
+   - Drag-and-drop or click-to-place gate tokens.
+   - Intelligent multi-qubit gate wiring for CNOT (Control ● and Target ⊕) and SWAP (×).
+   - Dynamic **Gate Inspector** detailing the exact input, matrix transformation, and output for any selected gate.
+   - One-click loadable presets:
+     - *Hadamard Superposition*
+     - *Pauli-X Bit Flip*
+     - *Bell State (Entanglement)*
+     - *Quantum Phase Flip (H-Z-H)*
+     - *GHZ 3-Qubit Entanglement*
+     - *Quantum SWAP*
 
-- [Team Members](#-team-members-github-ids)
-- [Problem Statement](#-problem-statement)
-- [Proposed Solution](#-proposed-solution)
-- [Approach & Architecture](#-approach--architecture)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [How to Run](#-how-to-run)
-- [How to Push Code](#-how-to-push-code)
-- [Submission Checklist](#-submission-checklist)
-- [Resources](#-resources)
-- [License](#-license)
+5. **Measurement & Multi-Shot Sampling**
+   - Exact theoretical state vector probability distribution ($P(x) = |\alpha_x|^2$).
+   - Monte Carlo multi-shot hardware emulator (100, 500, 1000 shots).
+   - Real-time comparison between theoretical predictions and empirical measured counts.
+   - Reduced density matrix Bloch sphere projections ($x, y, z, \theta, \phi$).
 
----
+6. **25-Question Assessment & Scorecard**
+   - Exactly 25 rigorous multiple-choice questions categorized by topic.
+   - Real-time question navigator dots with answered status tracking.
+   - Automated formula scoring: $\text{Percentage} = (\text{Score} / 25) \times 100$.
+   - Certified scorecard with performance tiers (*Excellent*, *Very Good*, *Good*, *Needs Improvement*, *Beginner*).
+   - Detailed **Improvement Analysis** identifying strong vs. weak topics.
+   - Personalized **Recommended Learning** advice with direct navigation to revision topics.
+   - Full question-by-question review detailing student choice, correct answers, and thorough explanations.
+   - Multi-attempt historical tracking showing percentage improvement over time.
 
-## 👥 Team Members (GitHub IDs)
-
-> Members are added to this repository as **collaborators** and must accept the
-> GitHub invitation before they can push. Add your GitHub username below.
-
-| # | Name | GitHub Username | Role |
-| :-- | :--- | :--- | :--- |
-| 1 | _Add your name_ | _your-github-username_ | _Team Lead_ |
-| 2 | _Add your name_ | _your-github-username_ | _Developer_ |
-| 3 | _Add your name_ | _your-github-username_ | _Developer_ |
-
-<!--
-Optional: add a plain list instead of the table above.
-- @username1
-- @username2
--->
-
----
-
-## ❓ Problem Statement
-
-<!--
-State the problem you are solving. Be specific: what is broken or missing,
-who experiences it, and why does it matter. Link to the official problem
-statement from the brief if one applies.
--->
-
-**Problem:** _Describe the problem in 2–3 sentences._
-
-**Why it matters:** _Explain the impact or opportunity._
-
-**Track / Category:** _Online / Offline · Track 1 / Track 2 · <domain>_
-
----
-
-## 💡 Proposed Solution
-
-<!--
-Describe your solution. Keep it concrete: the core idea, the user flow, and
-the quantum/ML technique you are applying.
--->
-
-**Solution:** _In 2–3 sentences, describe what you built._
-
-**Key idea:** _The one-line technical summary of your approach._
-
-**Why this works:** _How your approach addresses the problem statement._
+7. **Student Analytics Dashboard**
+   - Comprehensive learning progress metrics.
+   - Topic mastery proficiency bars.
+   - Full history of assessment attempts.
 
 ---
 
-## 🧩 Approach & Architecture
+## 🛠️ Technology Stack & GitHub Pages Compatibility
 
-<!--
-Walk through how it works. A simple pipeline diagram in text or Mermaid is ideal.
--->
-
-```mermaid
-flowchart LR
-    A[Input Data] --> B[Preprocessing]
-    B --> C[Quantum Circuit / Model]
-    C --> D[Post-processing]
-    D --> E[Output]
-```
-
-1. **Input** — _what data goes in and in what format_
-2. **Preprocessing** — _cleaning, feature extraction, encoding_
-3. **Quantum core** — _the circuit, ansatz, or algorithm used_
-4. **Post-processing** — _decoding, measurement, scoring_
-5. **Output** — _what the user finally gets_
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-| :--- | :--- |
-| Language | Python 3.11+ |
-| Quantum SDK | Qiskit `>=1.0`, Qiskit Aer, Qiskit Runtime |
-| Optimisation | Qiskit Optimization / COBYLA / SPSA |
-| Simulation | AerSimulator (statevector / noisemodel) |
-| Environment | JupyterLab / VS Code, `venv` |
-| Version control | Git + GitHub |
+- **Pure HTML5, CSS3, & Vanilla JavaScript (ES6+)**
+- **Zero External Backend**: Completely self-contained, requiring no Node.js server, Python server, Flask, or external database.
+- **Instant Deployment**: Compatible out-of-the-box with **GitHub Pages**, Netlify, Vercel, or any static file host.
+- **Responsive Design**: Tailored for desktops, laptops, tablets, and smartphones without horizontal overflow.
 
 ---
 
 ## 📁 Project Structure
 
-```text
-vtu-hc-ctrl-alt-elite/
-├── README.md              # This file
-├── requirements.txt       # Python dependencies
-├── pyproject.toml         # Project metadata (optional)
-├── .gitignore
-├── notebooks/             # Jupyter notebooks for experiments
-│   └── exploration.ipynb
-├── src/
-│   ├── __init__.py
-│   ├── circuit.py         # Quantum circuit construction
-│   ├── optimizer.py       # Optimization loop
-│   └── main.py            # Entry point
-├── data/                  # Datasets (use Git LFS for large files)
-├── tests/                 # Unit tests
-│   └── test_circuit.py
-└── docs/                  # Notes, diagrams, reports
+```
+QuantumGate/
+│
+├── index.html            # Main semantic HTML structure & modal containers
+├── style.css             # Futuristic dark quantum design system & responsive CSS
+├── README.md             # Project documentation & usage guide
+│
+└── js/
+    ├── quantum-engine.js # Pure math complex arithmetic, state vector & unitary gate engine
+    ├── gates-data.js     # Quantum gates catalog with mathematical matrices & analogies
+    ├── learning-data.js  # 7 pedagogical academy modules with interactive checkpoints
+    ├── quiz-data.js      # 25-question assessment bank categorized by topic
+    ├── circuit-presets.js# Pre-built beginner-to-advanced quantum circuit templates
+    └── app.js            # Main application controller, localStorage & UI orchestrator
 ```
 
 ---
 
-## 🚀 How to Run
+## 🚀 How to Run Locally
 
-### Prerequisites
+Because this project is built with static web standards, you can run it simply by opening `index.html` in any modern web browser:
 
-- Python 3.11 or newer
-- [Git](https://git-scm.com/downloads)
-- A GitHub account (you need collaborator access to this repo)
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-ctrl-alt-elite.git
-cd vtu-hc-ctrl-alt-elite
-```
-
-### 2. Create a virtual environment
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate        # Linux / macOS
-# .venv\Scripts\activate         # Windows (PowerShell)
-```
-
-### 3. Install dependencies
-
-```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 4. Run
-
-```bash
-python -m src.main
-```
-
-Or launch the notebook workflow:
-
-```bash
-jupyter lab
-```
-
-### 5. Run the tests
-
-```bash
-pytest -q
-```
+1. Double click `index.html` or open it with Google Chrome, Firefox, Safari, or Microsoft Edge.
+2. Alternatively, serve it using any local static file server:
+   ```bash
+   # Python 3
+   python -m http.server 8000
+   ```
+   Then navigate to `http://localhost:8000`.
 
 ---
 
-## 🔁 How to Push Code
+## 📜 Educational Learning Cycle
 
-> Full walkthrough: **[Git & Collaboration Handbook](../vtu-hc-guide-git-and-collaboration)** — collaboration
-> workflow, branches, pull requests, reviews and conflict resolution.
-
-### Configure Git (first time only)
-
-```bash
-git config --global user.name  "Your Name"
-git config --global user.email "you@example.com"
-```
-
-### Everyday workflow
-
-```bash
-# 1. Get the latest changes
-git checkout main
-git pull origin main
-
-# 2. Create a branch for your work
-git checkout -b feature/my-task
-
-# 3. Commit your work
-git add .
-git commit -m "feat: add variational circuit for the search problem"
-
-# 4. Push the branch
-git push -u origin feature/my-task
-
-# 5. Open a Pull Request on GitHub and request a review
-#    https://github.com/vtu-qiskit-fall-fest-2026/vtu-hc-ctrl-alt-elite/compare/main...feature/my-task
-
-# 6. After approval, merge into main
-git checkout main
-git pull origin main
-git branch -d feature/my-task
-```
-
-### Commit message convention
-
-| Prefix | Meaning |
-| :--- | :--- |
-| `feat:` | New feature |
-| `fix:` | Bug fix |
-| `docs:` | Documentation only |
-| `test:` | Adding or fixing tests |
-| `refactor:` | Code restructure, no behaviour change |
-| `chore:` | Build/config/dependency changes |
-
-### Useful commands
-
-```bash
-git status              # what changed
-git log --oneline -10   # recent commits
-git diff                # review changes before committing
-git stash               # shelve changes temporarily
-git pull --rebase       # update your branch on top of main
-```
-
-### Collaborating on the same repo
-
-- **Never push directly to `main`** — open a Pull Request.
-- **Pull before you push** to avoid rejected commits.
-- **Commit often** with clear messages.
-- **Resolve conflicts** locally: `git pull --rebase`, fix the files, then `git add` + `git rebase --continue`.
-- **Ask for a review** before merging — a second pair of eyes catches bugs fast.
-
----
-
-## ✅ Submission Checklist
-
-- [ ] Repository created and **public**
-- [ ] All team members added as **collaborators** and invitations accepted
-- [ ] `README.md` updated with project details, problem statement and solution
-- [ ] Team members listed under [Team Members](#-team-members-github-ids)
-- [ ] `requirements.txt` committed and project runs from a clean clone
-- [ ] Code pushed to `main` and the latest `main` builds successfully
-- [ ] Notebooks committed with **cleared outputs** (or use `nbstrip`)
-- [ ] `README` includes a demo screenshot / video link
-- [ ] Short project summary submitted on the hackathon portal
-
----
-
-## 📚 Resources
-
-| Resource | Link |
-| :--- | :--- |
-| 🔁 Git & collaboration handbook | [Git & Collaboration Handbook](../vtu-hc-guide-git-and-collaboration) |
-| ❓ Problem statements, solutions & terms | [Problem Statements, Solutions & Terms](../vtu-hc-guide-problem-and-solution) |
-| 📄 README writing guide | [README Guide & Template](../vtu-hc-guide-readme-template) |
-| ⚛️ Qiskit documentation | https://docs.quantum.ibm.com/ |
-| ⚛️ Qiskit Runtime & primitives | https://quantum.cloud.ibm.com/docs/ |
-| 🧪 Qiskit Aer simulator | https://docs.quantum.ibm.com/guides/simulator |
-| 💻 IBM Quantum Platform | https://quantum.cloud.ibm.com/ |
-| 🎓 Qiskit textbook | https://qiskit.qotlabs.org/learning/ |
-| 📋 GitHub Docs | https://docs.github.com/ |
-
----
-
-## 📄 License
-
-Released under the [MIT License](LICENSE). See `LICENSE` for details.
-
----
-
-<div align="center">
-
-**Ctrl Alt Elite** · Team ID `VTU-QFF-HC-0004` · Tier `Online`
-· Built with ⚛️ Qiskit for the VTU-QFF Hackathon
-
-[⬆ Back to Top](#ctrl-alt-elite)
-
-</div>
+$$\text{LEARN} \longrightarrow \text{UNDERSTAND} \longrightarrow \text{EXPERIMENT} \longrightarrow \text{MEASURE} \longrightarrow \text{ANALYZE} \longrightarrow \text{TEST} \longrightarrow \text{IMPROVE}$$
